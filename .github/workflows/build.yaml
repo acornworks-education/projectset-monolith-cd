@@ -40,18 +40,18 @@ jobs:
       id: validate
       working-directory: packer
       run: packer validate ./packer.pkr.hcl
-  build-ami:
-    needs:
-    - build
-    - validate-packer
-    strategy:
-      matrix:
-        environment:
-        - 'prod'
-        - 'staging'
-    runs-on: ubuntu-latest
-    steps:
-    - name: Build AMI
-      uses: acornworks-education/projectset-monolith-cd/.github/workflows/build-ami.yaml
-      with:
-        environment: ${{ matrix.environment }}
+  # build-ami:
+  #   needs:
+  #   - build
+  #   - validate-packer
+  #   strategy:
+  #     matrix:
+  #       environment:
+  #       - 'prod'
+  #       - 'staging'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Build AMI
+  #     uses: acornworks-education/projectset-monolith-cd/.github/workflows/build-ami.yaml
+  #     with:
+  #       environment: ${{ matrix.environment }}
