@@ -1,0 +1,57 @@
+name: CI Build
+
+on:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: corretto
+        java-version: 11
+    - name: Setup Gradle
+      uses: gradle/gradle-build-action@v2      
+    - name: Execute Gradle Build
+      run: ./gradlew build
+    - name: Copy monolith
+      run: cp $(cat ./build/path.txt) ./packer/monolith.jar
+    - name: Upload Jar file
+      uses: actions/upload-artifact@v4
+      with:
+        name: jar-file
+        path: ./packer/monolith.jar
+
+  validate-packer:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Setup Packer
+      uses: hashicorp/setup-packer@main
+      with:
+        version: latest
+    - name: Run `packer init`
+      working-directory: packer
+      run: packer init .
+    - name: Run `packer validate`
+      id: validate
+      working-directory: packer
+      run: packer validate ./packer.pkr.hcl
+  build-ami:
+    needs:
+    - build
+    - validate-packer
+    strategy:
+      matrix:
+        environment:
+        - 'prod'
+        - 'staging'
+    runs-on: ubuntu-latest
+    steps:
+    - name: Build AMI
+      uses: acornworks-education/projectset-monolith-cd/.github/workflows/build-ami.yaml
+      with:
+        environment: ${{ matrix.environment }}

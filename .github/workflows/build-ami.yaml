@@ -1,0 +1,45 @@
+name: Build AMI
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+        description: 'Deployment environment'
+
+jobs:
+  build-ami:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Checkout Artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: jar-file
+    - name: Setup Packer
+      uses: hashicorp/setup-packer@main
+      with:
+        version: latest
+    - name: Run `packer init`
+      working-directory: packer
+      run: packer init .
+    - name: Run `packer build`
+      working-directory: packer
+      run: packer build packer.pkr.hcl
+    - name: Extract AMI ID
+      id: get-ami-id
+      run: |
+        export AMI_ID=$(aws ec2 describe-images \
+            --owners self \
+            --filters "Name=name,Values=monolith-ami-*" \
+            --query "Images | sort_by(@, &CreationDate) | [-1].ImageId" \
+            --output text)
+
+        echo "AMI_ID=${AMI_ID}" >> "$GITHUB_OUTPUT"
+  
