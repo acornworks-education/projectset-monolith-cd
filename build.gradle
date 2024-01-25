@@ -1,0 +1,79 @@
+plugins {
+	id 'org.springframework.boot' version '2.7.5'
+	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id 'java'
+	id 'jacoco'	
+}
+
+group = 'com.acornworks'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.postgresql:postgresql'
+	implementation 'com.opencsv:opencsv:5.3'
+	implementation 'org.ta4j:ta4j-core:0.15'
+	implementation 'org.ta4j:ta4j-examples:0.15'
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+test {
+	finalizedBy jacocoTestCoverageVerification // verification is always performed after tests run
+}
+
+jacocoTestReport {
+	dependsOn test // tests are required to run before generating the report
+}
+
+bootJar {
+    // Set the archive file name with the 'lib' directory
+    archiveBaseName = 'monolith'
+    destinationDirectory = file("${project.buildDir}/libs/lib")
+
+    // Action to be executed before the JAR is built
+    doFirst {
+        def jarPath = destinationDirectory.file("${archiveBaseName.get()}-${archiveVersion.get()}.jar").get().asFile
+        if (jarPath.exists()) {
+            println "Deleting existing JAR file at: ${jarPath.absolutePath}"
+            jarPath.delete()
+        }
+    }
+
+    // Action to be executed after the JAR is built
+    doLast {
+        def jarPath = destinationDirectory.file("${archiveBaseName.get()}-${archiveVersion.get()}.jar").get().asFile
+        def outputPath = new File("${project.buildDir}/path.txt")
+        outputPath.text = jarPath.absolutePath		
+        println "JAR file created at: ${jarPath.absolutePath}"
+    }
+}
+
+jacocoTestCoverageVerification {
+	dependsOn jacocoTestReport	// report is generated before check a verification
+
+	violationRules {
+		rule {
+			limit {
+				minimum = 0.90
+			}
+		}
+	}
+}

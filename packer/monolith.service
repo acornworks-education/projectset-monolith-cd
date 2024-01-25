@@ -1,0 +1,11 @@
+[Unit]
+Description=Monolith Java Application
+After=network.target
+
+[Service]
+User=ec2-user
+ExecStart=/usr/bin/java -jar /home/ec2-user/monolith.jar
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
