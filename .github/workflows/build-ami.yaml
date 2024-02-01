@@ -22,11 +22,11 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-    - name: Checkout Artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: jar-file
-        path: ./packer        
+    # - name: Checkout Artifact
+    #   uses: actions/download-artifact@v4
+    #   with:
+    #     name: jar-file
+    #     path: ./packer        
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v4
       with:
