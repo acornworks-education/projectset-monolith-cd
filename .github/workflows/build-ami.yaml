@@ -30,7 +30,7 @@ jobs:
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v4
       with:
-        aws-region: $${{ inputs.region }}
+        aws-region: ${{ inputs.region }}
     - name: Setup Packer
       uses: hashicorp/setup-packer@main
       with:
