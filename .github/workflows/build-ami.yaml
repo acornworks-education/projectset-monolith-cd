@@ -22,6 +22,7 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: jar-file
+        path: ./packer        
     - name: Setup Packer
       uses: hashicorp/setup-packer@main
       with:
