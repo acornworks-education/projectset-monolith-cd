@@ -7,6 +7,10 @@ on:
         required: true
         type: string
         description: 'Deployment environment'
+      region:
+        required: true
+        type: string
+        description: 'AWS Region'
 
 jobs:
   build-ami:
@@ -23,6 +27,10 @@ jobs:
       with:
         name: jar-file
         path: ./packer        
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-region: $${{ input.region }}
     - name: Setup Packer
       uses: hashicorp/setup-packer@main
       with:

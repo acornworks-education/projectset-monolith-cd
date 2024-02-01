@@ -54,9 +54,12 @@ jobs:
     - validate-packer
     strategy:
       matrix:
-        environment:
-        - 'prod'
-        - 'staging'
+        include:
+          - environment: 'prod'
+            region: 'ap-southeast-2'
+          - environment: 'staging'
+            region: 'ap-northeast-2'
     uses: ./.github/workflows/build-ami.yaml
     with:
       environment: ${{ matrix.environment }}
+      region: $${{ matrix.region }}
