@@ -11,6 +11,9 @@ on:
         required: true
         type: string
         description: 'AWS Region'
+    secrets:
+      TEST:
+        required: true
 
 concurrency:
   group: "ami-deployment-${{ inputs.environment }}"
