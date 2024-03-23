@@ -62,4 +62,4 @@ jobs:
     uses: ./.github/workflows/build-ami.yaml
     with:
       environment: ${{ matrix.environment }}
-      region: $${{ matrix.region }}
+      region: ${{ matrix.region }}
