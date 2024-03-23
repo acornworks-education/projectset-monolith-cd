@@ -63,3 +63,5 @@ jobs:
     with:
       environment: ${{ matrix.environment }}
       region: ${{ matrix.region }}
+    secrets:
+      TEST: ${{ secrets.TEST }}
