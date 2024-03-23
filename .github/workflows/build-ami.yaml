@@ -31,7 +31,6 @@ jobs:
       env:
         TEST_TEST: ${{ secrets.TEST }}
       run: |
-        echo "$TEST_TEST"
         printenv
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v4
