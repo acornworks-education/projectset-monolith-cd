@@ -15,7 +15,8 @@ on:
 jobs:
   build-ami:
     runs-on: ubuntu-latest
-    environment: ${{ inputs.environment }}
+    environment: prod
+    # environment: ${{ inputs.environment }}
     # env:
     #   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
     #   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -31,7 +32,7 @@ jobs:
       # env:
       #   TEST: '${{ secrets.TEST }}'
       run: |
-        # echo "${{ secrets.TEST }}"
+        echo "${{ secrets.TEST }}"
         printenv
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v4
