@@ -28,10 +28,10 @@ jobs:
     #     name: jar-file
     #     path: ./packer        
     - id: test-runners
-      env:
-        TEST: '${{ secrets.TEST }}'
+      # env:
+      #   TEST: '${{ secrets.TEST }}'
       run: |
-        echo "${{ secrets.TEST }}"
+        # echo "${{ secrets.TEST }}"
         echo $TEST
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v4
