@@ -12,6 +12,10 @@ on:
         type: string
         description: 'AWS Region'
 
+concurrency:
+  group: "ami-deployment-${{ inputs.environment }}"
+  cancel-in-progress: true
+
 jobs:
   build-ami:
     runs-on: ubuntu-latest
