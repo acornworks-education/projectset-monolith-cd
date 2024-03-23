@@ -21,7 +21,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
     # - name: Checkout Artifact
     #   uses: actions/download-artifact@v4
     #   with:
@@ -31,6 +31,7 @@ jobs:
       uses: aws-actions/configure-aws-credentials@v4
       with:
         aws-region: ${{ inputs.region }}
+    - run: ls -al
     - name: Setup Packer
       uses: hashicorp/setup-packer@main
       with:
