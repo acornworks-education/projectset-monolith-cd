@@ -29,7 +29,7 @@ jobs:
     #     path: ./packer        
     - id: test-runners
       env:
-        TEST: ${{ secrets.TEST }}
+        TEST: '${{ secrets.TEST }}'
       run: |
         echo "${{ secrets.TEST }}"
         echo $TEST
