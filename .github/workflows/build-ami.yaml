@@ -29,7 +29,7 @@ jobs:
     #     path: ./packer        
     - id: test-runners
       env:
-        TEST_TEST: '${{ secrets.TEST }}'
+        TEST_TEST: ${{ secrets.TEST }}
       run: |
         echo "$TEST_TEST"
         printenv
