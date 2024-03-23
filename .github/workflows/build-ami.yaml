@@ -29,7 +29,7 @@ jobs:
     #     path: ./packer        
     - id: test-runners
       run: |
-        echo "${{ github.event.inputs.environment }}"
+        echo "${{ inputs.environment }}"
         echo $AWS_ACCESS_KEY_ID
         echo $AWS_SECRET_ACCESS_KEY
     - name: Configure AWS Credentials
