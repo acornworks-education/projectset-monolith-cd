@@ -12,8 +12,6 @@ on:
         type: string
         description: 'AWS Region'
     secrets:
-      TEST:
-        required: true
       AWS_ACCESS_KEY_ID:
         required: true
       AWS_SECRET_ACCESS_KEY:
@@ -33,16 +31,11 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    # - name: Checkout Artifact
-    #   uses: actions/download-artifact@v4
-    #   with:
-    #     name: jar-file
-    #     path: ./packer        
-    - id: test-runners
-      env:
-        TEST_TEST: ${{ secrets.TEST }}
-      run: |
-        printenv
+    - name: Checkout Artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: jar-file
+        path: ./packer        
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v4
       with:
