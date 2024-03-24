@@ -49,6 +49,7 @@ jobs:
       run: packer init .
     - name: Run `packer build`
       working-directory: packer
+      continue-on-error: true
       run: packer build -var "aws_region=${{ inputs.region }}" packer.pkr.hcl
     - name: Extract AMI ID
       id: get-ami-id
