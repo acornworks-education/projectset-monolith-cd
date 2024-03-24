@@ -2,43 +2,35 @@
 
 # Function to delete EC2 instances with names starting with "packer_"
 cleanup_ec2_instances() {
-    echo "Finding EC2 instances with security groups starting with 'packer_'..."
+    echo "Finding security groups starting with 'packer_'..."
 
-    # Get the IDs of security groups with names starting with "packer_"
-    sg_ids=$(aws ec2 describe-security-groups --query "SecurityGroups[?starts_with(GroupName, 'packer_')].[GroupId]" --output text)
+    # Fetch security groups with names starting with "packer_"
+    sg_ids=$(aws ec2 describe-security-groups --query "SecurityGroups[?starts_with(GroupName, 'packer_')].GroupId" --output text)
 
     if [ -z "$sg_ids" ]; then
         echo "No security groups found with names starting with 'packer_'."
         return
     fi
 
-    # Initialize an empty array to hold instances for deletion
-    instances_to_delete=()
+    echo "Security groups found: $sg_ids"
+    echo "Searching for instances associated with these security groups..."
 
-    # For each security group ID, find associated instances
     for sg_id in $sg_ids; do
-        echo "Checking instances for security group $sg_id..."
-        instance_ids=$(aws ec2 describe-instances --filters Name=instance.group-id,Values=$sg_id --query "Reservations[*].Instances[*].[InstanceId]" --output text)
+        echo "Processing security group: $sg_id"
 
-        # Check if any instance IDs were returned
-        if [ ! -z "$instance_ids" ]; then
-            # Add instance IDs to the array
-            for id in $instance_ids; do
-                instances_to_delete+=($id)
-            done
+        # Fetch instance IDs associated with the security group, filtering out any null responses
+        instance_ids=$(aws ec2 describe-instances \
+            --filters "Name=instance.group-id,Values=$sg_id" \
+            --query "Reservations[].Instances[].[InstanceId]" --output text | grep -v "None")
+
+        # Check if instance IDs were found
+        if [ -n "$instance_ids" ]; then
+            echo "Terminating instances: $instance_ids"
+            aws ec2 terminate-instances --instance-ids $instance_ids
+        else
+            echo "No instances found for security group $sg_id."
         fi
     done
-
-    # Remove duplicate instance IDs if any
-    unique_instances_to_delete=($(echo "${instances_to_delete[@]}" | tr ' ' '\n' | sort -u | tr '\n' ' '))
-
-    # Terminate instances
-    if [ ${#unique_instances_to_delete[@]} -ne 0 ]; then
-        echo "Terminating instances: ${unique_instances_to_delete[@]}"
-        aws ec2 terminate-instances --instance-ids ${unique_instances_to_delete[@]}
-    else
-        echo "No instances found with security groups starting with 'packer_'."
-    fi
 }
 
 
