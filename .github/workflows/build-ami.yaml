@@ -49,7 +49,6 @@ jobs:
       run: packer init .
     - name: Run `packer build`
       working-directory: packer
-      continue-on-error: true
       run: packer build -var "aws_region=${{ inputs.region }}" packer.pkr.hcl
     - name: Extract AMI ID
       id: get-ami-id
@@ -62,6 +61,6 @@ jobs:
 
         echo "AMI_ID=${AMI_ID}" >> "$GITHUB_OUTPUT"
     - name: Clean up resources
-      if: ${{ failure() }}
+      if: ${{ always() }}
       run: ./packer/resource_cleanup.sh
   
