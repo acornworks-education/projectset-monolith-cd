@@ -60,4 +60,7 @@ jobs:
             --output text)
 
         echo "AMI_ID=${AMI_ID}" >> "$GITHUB_OUTPUT"
+    - name: Clean up resources
+      if: ${{ failure() }}
+      run: ./packer/resource_cleanup.sh
   

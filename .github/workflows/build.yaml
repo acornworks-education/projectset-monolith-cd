@@ -53,12 +53,14 @@ jobs:
     - build
     - validate-packer
     strategy:
+      fail-fast: true       # This prevents the cancellation of all matrix jobs if one fails (default, true)
+      # max-parallel: 2     # Set the maximum number of jobs that can run simultaneously
       matrix:
         include:
           - environment: 'prod'
             region: 'ap-southeast-2'
-          # - environment: 'staging'
-          #   region: 'ap-northeast-2'
+          - environment: 'staging'
+            region: 'ap-northeast-2'
     uses: ./.github/workflows/build-ami.yaml
     with:
       environment: ${{ matrix.environment }}

@@ -5,6 +5,7 @@
             "Effect": "Allow",
             "Action": [
                 "ec2:AttachVolume",
+                "ec2:AuthorizeSecurityGroupIngress",
                 "ec2:CopyImage",
                 "ec2:CreateImage",
                 "ec2:CreateKeypair",
