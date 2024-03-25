@@ -1,0 +1,23 @@
+version: "3.6"
+
+services:
+  monolith:
+    build: .
+    ports:
+      - "65080:65080"
+    depends_on:
+      - database
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/postgres
+  database:
+    image: postgres:14.5
+    environment:
+      POSTGRES_PASSWORD: P@ssw0rd
+    ports:
+    - "65432:5432"
+    volumes:
+    - "./db/init_db.sql:/docker-entrypoint-initdb.d/init_db.sql"
+  flyway:
+    build:
+      context: .
+      dockerfile: db/Dockerfile
