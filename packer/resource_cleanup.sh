@@ -27,6 +27,12 @@ cleanup_ec2_instances() {
         if [ -n "$instance_ids" ]; then
             echo "Terminating instances: $instance_ids"
             aws ec2 terminate-instances --instance-ids $instance_ids
+
+            echo "Waiting for instances to be fully terminated..."
+            for instance_id in $instance_ids; do
+                aws ec2 wait instance-terminated --instance-ids $instance_id
+                echo "Instance $instance_id terminated."
+            done
         else
             echo "No instances found for security group $sg_id."
         fi
