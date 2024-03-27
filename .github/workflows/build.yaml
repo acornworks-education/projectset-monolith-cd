@@ -48,6 +48,7 @@ jobs:
       id: validate
       working-directory: packer
       run: packer validate ./packer.pkr.hcl
+      
   build-ami:
     if: github.ref == 'refs/heads/main'
     needs:

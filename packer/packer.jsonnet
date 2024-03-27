@@ -1,3 +1,5 @@
+local region = std.extVar('region');
+
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -36,7 +38,12 @@
                 "ec2:StopInstances",
                 "ec2:TerminateInstances"
             ],
-            "Resource": "*"
+            "Resource": "*",
+            "Condition": {
+                "StringEqualsIfExists": {
+                    "aws:RequestedRegion": region
+                }
+            }
         }
     ]
 }
