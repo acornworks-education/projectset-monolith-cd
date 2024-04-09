@@ -7,10 +7,6 @@ on:
         required: true
         type: string
         description: 'Deployment environment'
-      # region:
-      #   required: true
-      #   type: string
-      #   description: 'AWS Region'
     secrets:
       AWS_ACCESS_KEY_ID:
         required: true
@@ -31,38 +27,39 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    - name: Checkout Artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: jar-file
-        path: ./packer
-    - run: echo "AWS_REGION=${AWS_REGION}"        
-    - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v4
-      with:
-        aws-region: ${{ vars.AWS_REGION }}
-    - name: Setup Packer
-      uses: hashicorp/setup-packer@main
-      with:
-        version: latest
-    - name: Run `packer init`
-      working-directory: packer
-      run: packer init .
-    - name: Run `packer build`
-      working-directory: packer
-      run: packer build -var "aws_region=${AWS_REGION}" packer.pkr.hcl
-    - name: Extract AMI ID
-      id: get-ami-id
-      run: |
-        export AMI_ID=$(aws ec2 describe-images \
-            --owners self \
-            --filters "Name=name,Values=monolith-ami-*" \
-            --query "Images | sort_by(@, &CreationDate) | [-1].ImageId" \
-            --output text)
+    - run: |
+        echo "VARS = $${{ vars.AWS_ACCESS_KEY_ID }}"
+    # - name: Checkout Artifact
+    #   uses: actions/download-artifact@v4
+    #   with:
+    #     name: jar-file
+    #     path: ./packer
+    # - name: Configure AWS Credentials
+    #   uses: aws-actions/configure-aws-credentials@v4
+    #   with:
+    #     aws-region: ${{ vars.AWS_REGION }}
+    # - name: Setup Packer
+    #   uses: hashicorp/setup-packer@main
+    #   with:
+    #     version: latest
+    # - name: Run `packer init`
+    #   working-directory: packer
+    #   run: packer init .
+    # - name: Run `packer build`
+    #   working-directory: packer
+    #   run: packer build -var "aws_region=${{ vars.AWS_REGION }} packer.pkr.hcl
+    # - name: Extract AMI ID
+    #   id: get-ami-id
+    #   run: |
+    #     export AMI_ID=$(aws ec2 describe-images \
+    #         --owners self \
+    #         --filters "Name=name,Values=monolith-ami-*" \
+    #         --query "Images | sort_by(@, &CreationDate) | [-1].ImageId" \
+    #         --output text)
 
-        echo "AMI_ID=${AMI_ID}" >> "$GITHUB_OUTPUT"
-        echo "AMI: ${AMI_ID}"
-    - name: Clean up resources
-      if: ${{ cancelled() }}
-      run: ./packer/resource_cleanup.sh
+    #     echo "AMI_ID=${AMI_ID}" >> "$GITHUB_OUTPUT"
+    #     echo "AMI: ${AMI_ID}"
+    # - name: Clean up resources
+    #   if: ${{ cancelled() }}
+    #   run: ./packer/resource_cleanup.sh
   
