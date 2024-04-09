@@ -20,18 +20,20 @@ jobs:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     steps:
-    - name: Checkout code
+    - name: Checkout
       uses: actions/checkout@v4
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v4
       with:
         aws-region: ${{ vars.AWS_REGION }}
+    - name: Check IAM
+      run: aws sts get-caller-identity
     - name: AMI
       run: echo "${{ inputs.ami }}"
     - uses: hashicorp/setup-terraform@v3
     - id: terraform-init
       working-directory: ./terraform
-      run: terraform init -backend-config="key=${{ vars.AWS_REGION }}.tfstate"
+      run: terraform init -backend-config="key=${{ vars.AWS_REGION }}/terraform.tfstate"
     - id: terraform-plan
       working-directory: ./terraform
       run: terraform plan -no-color -var-file="${{ inputs.environment }}.tfvars" -var="region=${{ vars.AWS_REGION }}"
