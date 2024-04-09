@@ -28,7 +28,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
     - run: |
-        echo "VARS = $${{ vars.AWS_ACCESS_KEY_ID }}"
+        echo "ENV = ${AWS_ACCESS_KEY_ID}"
     # - name: Checkout Artifact
     #   uses: actions/download-artifact@v4
     #   with:
