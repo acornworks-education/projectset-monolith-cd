@@ -28,9 +28,9 @@ jobs:
         aws-region: ${{ vars.AWS_REGION }}
     - name: AMI
       run: echo "${{ inputs.ami }}"
-    # - uses: hashicorp/setup-terraform@v3
-    # - id: terraform-init
-    #   run: terraform init -backend-config="key=${{ vars.AWS_REGION }}/terraform.tfstate"
-    # - id: terraform-plan
-    #   run: terraform plan -no-color -var-file="${{ inputs.environment }}.tfvars" -var="region=${{ vars.AWS_REGION }}"
+    - uses: hashicorp/setup-terraform@v3
+    - id: terraform-init
+      run: terraform init -backend-config="key=${{ vars.AWS_REGION }}/terraform.tfstate"
+    - id: terraform-plan
+      run: terraform plan -no-color -var-file="${{ inputs.environment }}.tfvars" -var="region=${{ vars.AWS_REGION }}"
   
