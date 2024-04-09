@@ -35,11 +35,12 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: jar-file
-        path: ./packer        
+        path: ./packer
+    - run: echo "AWS_REGION=${AWS_REGION}"        
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v4
-      # with:
-      #   aws-region: ${{ inputs.region }}
+      with:
+        aws-region: ${{ env.AWS_REGION }}
     - name: Setup Packer
       uses: hashicorp/setup-packer@main
       with:
@@ -49,7 +50,7 @@ jobs:
       run: packer init .
     - name: Run `packer build`
       working-directory: packer
-      run: packer build -var "aws_region=${{ inputs.region }}" packer.pkr.hcl
+      run: packer build -var "aws_region=${AWS_REGION}" packer.pkr.hcl
     - name: Extract AMI ID
       id: get-ami-id
       run: |
