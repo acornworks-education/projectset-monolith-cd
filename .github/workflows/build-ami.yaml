@@ -57,7 +57,8 @@ jobs:
       run: ./packer/resource_cleanup.sh
   deploy-ec2:
     uses: ./.github/workflows/deploy-ec2.yaml
+    needs: build-ami
     secrets: inherit    
     with:
       environment: ${{ inputs.environment }}
-      ami: ${{ jobs.build-ami.outputs.AMI_ID }}
+      ami: ${{ needs.build-ami.outputs.AMI_ID }}
