@@ -24,11 +24,11 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    - name: Checkout Artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: jar-file
-        path: ./packer
+    # - name: Checkout Artifact
+    #   uses: actions/download-artifact@v4
+    #   with:
+    #     name: jar-file
+    #     path: ./packer
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v4
       with:
@@ -54,9 +54,9 @@ jobs:
 
         echo "AMI_ID=${AMI_ID}" >> "$GITHUB_OUTPUT"
         echo "AMI: ${AMI_ID}"
-    - name: Clean up resources
-      if: ${{ cancelled() }}
-      run: ./packer/resource_cleanup.sh
+    # - name: Clean up resources
+    #   if: ${{ cancelled() }}
+    #   run: ./packer/resource_cleanup.sh
   deploy-ec2:
     uses: ./.github/workflows/deploy-ec2.yaml
     needs: build-ami
