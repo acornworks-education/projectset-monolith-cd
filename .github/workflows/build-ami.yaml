@@ -7,11 +7,11 @@ on:
         required: true
         type: string
         description: 'Deployment environment'
-    secrets:
-      AWS_ACCESS_KEY_ID:
-        required: true
-      AWS_SECRET_ACCESS_KEY:
-        required: true
+    # secrets:
+    #   AWS_ACCESS_KEY_ID:
+    #     required: true
+    #   AWS_SECRET_ACCESS_KEY:
+    #     required: true
 
 concurrency:
   group: "ami-deployment-${{ inputs.environment }}"
@@ -45,7 +45,7 @@ jobs:
       run: packer init .
     - name: Run `packer build`
       working-directory: packer
-      run: packer build -var "aws_region=${{ vars.AWS_REGION }} packer.pkr.hcl
+      run: packer build -var "aws_region=${{ vars.AWS_REGION }}" packer.pkr.hcl
     - name: Extract AMI ID
       id: get-ami-id
       run: |
