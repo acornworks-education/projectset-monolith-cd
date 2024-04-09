@@ -7,11 +7,6 @@ on:
         required: true
         type: string
         description: 'Deployment environment'
-    # secrets:
-    #   AWS_ACCESS_KEY_ID:
-    #     required: true
-    #   AWS_SECRET_ACCESS_KEY:
-    #     required: true
 
 concurrency:
   group: "ami-deployment-${{ inputs.environment }}"
