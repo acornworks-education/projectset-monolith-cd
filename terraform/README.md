@@ -1,0 +1,1 @@
+terraform init -backend-config="key=ap-southeast-2/terraform.tfstate"

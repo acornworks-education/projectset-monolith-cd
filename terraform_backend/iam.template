@@ -1,0 +1,28 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": "s3:ListBucket",
+            "Resource": "arn:aws:s3:::terraform-backend-state-...replace..."
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:GetObject",
+                "s3:PutObject"
+            ],
+            "Resource": "arn:aws:s3:::terraform-backend-state-...replace.../deployment/terraform.tfstate"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "dynamodb:DescribeTable",
+                "dynamodb:GetItem",
+                "dynamodb:PutItem",
+                "dynamodb:DeleteItem"
+            ],
+            "Resource": "arn:aws:dynamodb:*:*:table/terraform_state_lock"
+        }
+    ]
+}

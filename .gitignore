@@ -28,3 +28,8 @@ terraform/.terraform
 .history
 .gradle
 build
+
+terraform_backend/.terraform
+terraform_backend/.terraform.lock.hcl
+terraform_backend/iam.json
+terraform_backend/s3.tf

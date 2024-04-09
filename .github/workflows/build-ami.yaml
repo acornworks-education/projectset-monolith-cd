@@ -31,16 +31,16 @@ jobs:
       uses: aws-actions/configure-aws-credentials@v4
       with:
         aws-region: ${{ vars.AWS_REGION }}
-    - name: Setup Packer
-      uses: hashicorp/setup-packer@main
-      with:
-        version: latest
-    - name: Run `packer init`
-      working-directory: packer
-      run: packer init .
-    - name: Run `packer build`
-      working-directory: packer
-      run: packer build -var "aws_region=${{ vars.AWS_REGION }}" packer.pkr.hcl
+    # - name: Setup Packer
+    #   uses: hashicorp/setup-packer@main
+    #   with:
+    #     version: latest
+    # - name: Run `packer init`
+    #   working-directory: packer
+    #   run: packer init .
+    # - name: Run `packer build`
+    #   working-directory: packer
+    #   run: packer build -var "aws_region=${{ vars.AWS_REGION }}" packer.pkr.hcl
     - name: Extract AMI ID
       id: get-ami-id
       run: |
@@ -55,4 +55,9 @@ jobs:
     - name: Clean up resources
       if: ${{ cancelled() }}
       run: ./packer/resource_cleanup.sh
-  
+  deploy-ec2:
+    uses: ./.github/workflows/deploy-ec2.yaml
+    secrets: inherit    
+    with:
+      environment: ${{ inputs.environment }}
+      ami: ${{ jobs.build-ami.outputs.AMI_ID }}

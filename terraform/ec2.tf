@@ -1,15 +1,5 @@
-data "aws_ami" "latest_monolith_ami" {
-  most_recent = true
-  owners      = ["self"]
-
-  filter {
-    name   = "name"
-    values = ["monolith-ami-*"]
-  }
-}
-
 resource "aws_instance" "monolith" {
-  ami           = data.aws_ami.latest_monolith_ami.id
+  ami           = var.ami_id
   instance_type = var.instance_type
 
   tags = {

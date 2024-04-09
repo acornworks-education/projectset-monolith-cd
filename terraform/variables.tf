@@ -31,3 +31,8 @@ variable "pem_file_location" {
   description = "PEM file location"
   type        = string
 }
+
+variable "ami_id" {
+  description = "AMI ID"
+  type        = string
+}

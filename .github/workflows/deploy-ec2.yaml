@@ -1,0 +1,36 @@
+name: Deploy Terraform IaC
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+        description: 'Deployment environment'
+      ami:
+        required: true
+        type: string
+        description: 'AMI ID'
+
+jobs:
+  deploy-ec2:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-region: ${{ vars.AWS_REGION }}
+    - name: AMI
+      run: echo "${{ inputs.ami }}"
+    # - uses: hashicorp/setup-terraform@v3
+    # - id: terraform-init
+    #   run: terraform init -backend-config="key=${{ vars.AWS_REGION }}/terraform.tfstate"
+    # - id: terraform-plan
+    #   run: terraform plan -no-color -var-file="${{ inputs.environment }}.tfvars" -var="region=${{ vars.AWS_REGION }}"
+  
