@@ -7,10 +7,10 @@ on:
         required: true
         type: string
         description: 'Deployment environment'
-      region:
-        required: true
-        type: string
-        description: 'AWS Region'
+      # region:
+      #   required: true
+      #   type: string
+      #   description: 'AWS Region'
     secrets:
       AWS_ACCESS_KEY_ID:
         required: true
@@ -38,8 +38,8 @@ jobs:
         path: ./packer        
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v4
-      with:
-        aws-region: ${{ inputs.region }}
+      # with:
+      #   aws-region: ${{ inputs.region }}
     - name: Setup Packer
       uses: hashicorp/setup-packer@main
       with:
@@ -60,6 +60,7 @@ jobs:
             --output text)
 
         echo "AMI_ID=${AMI_ID}" >> "$GITHUB_OUTPUT"
+        echo "AMI: ${AMI_ID}"
     - name: Clean up resources
       if: ${{ cancelled() }}
       run: ./packer/resource_cleanup.sh

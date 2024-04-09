@@ -60,13 +60,13 @@ jobs:
       matrix:
         include:
           - environment: 'prod'
-            region: 'ap-southeast-2'
+            # region: 'ap-southeast-2'
           - environment: 'staging'
-            region: 'ap-northeast-2'
+            # region: 'ap-northeast-2'
     uses: ./.github/workflows/build-ami.yaml
     with:
       environment: ${{ matrix.environment }}
-      region: ${{ matrix.region }}
+      # region: ${{ matrix.region }}
     secrets:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
