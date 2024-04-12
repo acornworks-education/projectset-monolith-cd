@@ -4,7 +4,10 @@
         {
             "Effect": "Allow",
             "Action": "s3:ListBucket",
-            "Resource": "arn:aws:s3:::terraform-backend-state-...replace..."
+            "Resource": [
+                "arn:aws:s3:::terraform-backend-state-...replace.../*",
+                "arn:aws:s3:::terraform-backend-state-...replace..."
+            ]
         },
         {
             "Effect": "Allow",
@@ -12,7 +15,7 @@
                 "s3:GetObject",
                 "s3:PutObject"
             ],
-            "Resource": "arn:aws:s3:::terraform-backend-state-...replace.../deployment/terraform.tfstate"
+            "Resource": "arn:aws:s3:::terraform-backend-state-...replace.../*/terraform.tfstate"
         },
         {
             "Effect": "Allow",

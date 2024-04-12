@@ -60,7 +60,7 @@ jobs:
       matrix:
         target:
           - 'prod'
-          - 'staging'
+          # - 'staging'
     uses: ./.github/workflows/build-ami.yaml
     with:
       environment: ${{ matrix.target }}
