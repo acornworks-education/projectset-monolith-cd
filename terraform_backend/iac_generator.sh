@@ -7,5 +7,5 @@ if [ -z "$BUCKET_SUFFIX" ]; then
   exit 1
 fi
 
-sed "s/...replace.../$BUCKET_SUFFIX/g" s3.template > s3.tf
 sed "s/...replace.../$BUCKET_SUFFIX/g" iam.template > iam.json
+echo "s3_suffix = \"$BUCKET_SUFFIX\"" > terraform.tfvars

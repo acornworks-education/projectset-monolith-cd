@@ -32,4 +32,9 @@ build
 terraform_backend/.terraform
 terraform_backend/.terraform.lock.hcl
 terraform_backend/iam.json
-terraform_backend/s3.tf
+terraform_backend/terraform.tfvars
+terraform_backend/.terraform.tfstate.lock.info
+terraform_backend/terraform.tfstate
+terraform_backend/terraform.tfstate.backup
+terraform_backend/modules/.terraform
+terraform_backend/modules/.terraform.lock.hcl

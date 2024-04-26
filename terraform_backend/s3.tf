@@ -1,7 +1,5 @@
-
-
 resource "aws_s3_bucket" "terraform_backend_state" {
-  bucket        = "terraform-backend-state-...replace..."
+  bucket        = "terraform-backend-state-${var.s3_suffix}"
   force_destroy = true
 }
 

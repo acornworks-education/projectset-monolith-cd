@@ -12,6 +12,10 @@ terraform {
 }
 
 provider "aws" {
-  # Sydney region
   region = "ap-southeast-2"
+}
+
+provider "aws" {
+  alias  = "staging"
+  region = "ap-northeast-2"
 }
