@@ -9,7 +9,7 @@ terraform {
   # Variables may not be used here.
   backend "s3" {
     bucket         = "terraform-backend-state-fb0f9062"
-    region         = "ap-southeast-2"
+    region         = "ap-norththeast-2"
     dynamodb_table = "terraform_state_lock"
   }
 }
