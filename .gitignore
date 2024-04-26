@@ -25,6 +25,7 @@ replay_pid*
 
 .infracost
 terraform/.terraform
+terraform/.terraform.lock.hcl
 .history
 .gradle
 build
