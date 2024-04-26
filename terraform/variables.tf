@@ -4,12 +4,6 @@ variable "region" {
   default     = "ap-northeast-2"
 }
 
-variable "aws_profile" {
-  description = "The AWS profile to use for deployment"
-  type        = string
-  default     = "default"
-}
-
 variable "instance_type" {
   description = "The type of instance to start"
   type        = string
