@@ -21,11 +21,6 @@ variable "db_instance_type" {
   default     = "db.t2.micro"
 }
 
-variable "pem_file_location" {
-  description = "PEM file location"
-  type        = string
-}
-
 variable "ami_id" {
   description = "AMI ID"
   type        = string
