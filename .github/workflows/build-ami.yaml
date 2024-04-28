@@ -18,7 +18,7 @@ jobs:
     environment: ${{ inputs.environment }}
     outputs:
       ami: ${{ steps.get-ami-id.outputs.AMI_ID }}
-      is_deployment_target: ${{ steps.check_deployment_target.is_deployment_target }}
+      is_deployment_target: ${{ steps.check_deployment_target.IS_DEPLOYMENT_TARGET }}
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -29,9 +29,10 @@ jobs:
       id: check_deployment_target
       run: |
         if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
-          echo "is_deployment_target=true" >> $GITHUB_OUTPUT
+          echo "IS_DEPLOYMENT_TARGET=true" >> "$GITHUB_OUTPUT"
+          
         else
-          echo "is_deployment_target=false" >> $GITHUB_OUTPUT
+          echo "IS_DEPLOYMENT_TARGET=false" >> "$GITHUB_OUTPUT"
         fi
     # - name: Checkout Artifact
     #   uses: actions/download-artifact@v4
