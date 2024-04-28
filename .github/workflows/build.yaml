@@ -64,5 +64,4 @@ jobs:
     uses: ./.github/workflows/build-ami.yaml
     with:
       environment: ${{ matrix.target }}
-      lock_option: ${{ needs.build.outputs.is_deployment_target }}
     secrets: inherit
