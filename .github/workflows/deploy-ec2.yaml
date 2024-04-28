@@ -11,6 +11,11 @@ on:
         required: true
         type: string
         description: 'AMI ID'
+      lock_option:
+        required: false
+        type: string
+        default: 'true'
+        description: 'Terraform lock option'
 
 jobs:
   deploy-ec2:
@@ -37,5 +42,6 @@ jobs:
       run: terraform init -backend-config="key=${{ vars.AWS_REGION }}/terraform.tfstate"
     - id: terraform-plan
       working-directory: ./terraform
-      run: terraform plan -var-file="vars/${{ inputs.environment }}.tfvars" -var="region=${{ vars.AWS_REGION }}" -var="ami_id=${{ inputs.ami }}"
+      run: terraform plan -lock=${{ inputs.lock_option }} -var-file="vars/${{ inputs.environment }}.tfvars" -var="region=${{ vars.AWS_REGION }}" -var="ami_id=${{ inputs.ami }}"
+
   
