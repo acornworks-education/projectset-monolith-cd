@@ -6,8 +6,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    outputs:
-      is_deployment_target: ${{ steps.check_deployment_target.is_deployment_target }}
     steps:
     - name: Checkout
       uses: actions/checkout@v4 
@@ -27,14 +25,6 @@ jobs:
     #   with:
     #     name: jar-file
     #     path: ./packer/monolith.jar
-    - name: Check whether deployed branch or not
-      id: check_deployment_target
-      run: |
-        if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
-          echo "is_deployment_target=true" >> $GITHUB_OUTPUT
-        else
-          echo "is_deployment_target=false" >> $GITHUB_OUTPUT
-        fi
 
   validate-packer:
     runs-on: ubuntu-latest
